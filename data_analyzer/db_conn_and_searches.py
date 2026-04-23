@@ -20,3 +20,15 @@ class MySqlConnection:
                 print(f"\n👎 Attempt {retry+1} failed: {e}")
                 if retry == 4:
                     raise
+    
+
+    def get_risks(self, suspect_id:str):
+        query = f"""SELECT initial_risk, credit_rating_factor
+            FROM accounts_financial
+            WHERE suspect_id = %s
+        """
+        cursor = self.conn.cursor()
+        cursor.execute(query, (suspect_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        return result

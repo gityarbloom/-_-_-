@@ -26,12 +26,22 @@ db = MySqlConnection(**db_config)
 
 counter = 0
 for msg in consumer.consum():
-    counter += 1
-    print(f"\n❗ A new message (number: {counter}) received")
-    print(f"\n{msg}\n")
-    msg["text"] = editor.clean_html(msg["text"])
-    msg["value_transaction_current"] = editor.price_extraction(msg["text"])
-
+    print(f"\nReceived message: {msg}\n")
+    if len(msg) == 5:
+        msg["text"] = editor.clean_html(msg["text"])
+        msg["current_transaction_value"] = editor.price_extraction(msg["text"])
+        risks = db.get_risks(msg["suspect_id"])
+        initial_risk = risks[0]
+        credit_rating_factor = risks[1]
+        if initial_risk > 7:
+            credit_rating_factor = credit_rating_factor *1.5
+        final_score = initial_risk +(msg["current_transaction_value"]/1000) *credit_rating_factor
+        msg["initial_risk"] = initial_risk
+        msg["credit_rating_factor"] = credit_rating_factor
+        msg["final_score"] = final_score
+        counter +=1
+        print(f"***{counter}***")
+        print(f"\n\n*************{msg}*************\n\n")
 print("\n\n🥱 --The DATA-ANALYZERR finshed his action-- 🥱\n\n")
 
 

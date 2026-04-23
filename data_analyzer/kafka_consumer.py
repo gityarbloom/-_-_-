@@ -1,6 +1,6 @@
 from confluent_kafka import Consumer, KafkaError
 import time
-
+import json
 
 
 class  KafkaConsumer:
@@ -40,9 +40,8 @@ class  KafkaConsumer:
                     else:
                         print(f"\nError: {msg.error()}\n")
                         break
-                massage = msg.value().decode('utf-8')
-                print(f"\nReceived message: {massage}\n")
-                yield massage
+                yield json.loads(msg.value().decode('utf-8'))
+                time.sleep(1)
         except Exception as e:
             print(f"\nconsumer failed because: \n{e}\n")
             raise
