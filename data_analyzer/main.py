@@ -40,8 +40,8 @@ for msg in consumer.consum():
         msg["credit_rating_factor"] = credit_rating_factor
         msg["final_score"] = final_score
         counter +=1
-        print(f"***{counter}***")
-        print(f"\n\n*************{msg}*************\n\n")
+        print(f"\n\n***{counter}***")
+        print(f"*************{msg}*************\n\n")
 print("\n\n🥱 --The DATA-ANALYZERR finshed his action-- 🥱\n\n")
 
 
