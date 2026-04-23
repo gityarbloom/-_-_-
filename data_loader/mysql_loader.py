@@ -13,7 +13,7 @@ class MySqlLoader:
     def init_connection(self, password, host, user):
         for retry in range(5):
             try:
-                time.sleep(1)
+                time.sleep(2)
                 print("\nTry to connect to MySql⏳...")
                 conn = pymysql.connect(password=password, host=host, user=user)
                 with conn.cursor() as cursor:
