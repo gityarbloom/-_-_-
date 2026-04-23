@@ -3,20 +3,19 @@ import re
 
 
 
-def clean_html(raw_html):
-    cleanr = re.compile('<.*?>')
-    cleantext = re.sub(cleanr, '', raw_html)
-    return html.unescape(cleantext)
+class TextEditor:
+    def __init__(self, row_text):
+        self.row_text = row_text
+        
+
+    def clean_html(self):
+        cleanr = re.compile('<.*?>')
+        cleantext = re.sub(cleanr, '', self.row_text)
+        clean_text = html.unescape(cleantext)
+        return clean_text
 
 
-def extraction_the_price(text):
-    match = re.search(r'\$(\d+)', text)
-    if match:
-        return match.group(1)
-
-
-
-
-# tx = "The <b>package</b> will be delivered at <i>midnight</i> near point X. Use the rifle. Payment: $15000 on delivery."
-# tx2 = clean_html(tx)
-# print(extraction_the_price(tx2))
+    def dollar_price_extraction(self):
+        match = re.search(r'\$(\d+)', self.row_text)
+        if match:
+            return match.group(1)

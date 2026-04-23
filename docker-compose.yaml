@@ -78,12 +78,18 @@ services:
 
 
   data_analyzer:
+    build: data_analyzer/
+    container_name: data_analyzer
+    ports: 
+      - 8200:8200
     environment:
       CONSUM_CONFIG: kafka:9092
       MYSQL_HOST: mysql
       MYSQL_DATABASE: identities
       MYSQL_USER: app_user
       MYSQL_PASSWORD: israelyarbloom
+    depends_on:
+      - data_loader
 
 
       
