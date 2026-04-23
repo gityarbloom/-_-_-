@@ -1,27 +1,23 @@
 import pandas as pd
-import time
 import json
 
 
 
 class DataPreparer:
-    def __init__(self, gps_path, intercepts_path, identities_path):
-        self.gps_signals = self.loading_from_json(gps_path)
-        time.sleep(2)
-        self.intercepts_signals = self.loading_from_json(intercepts_path)
-        time.sleep(2)
-        self.df = self.loading_from_csv(identities_path)
 
+    def __init__(self, gps_path:str, intercepts_path:str, csv_path:str):
+        self.gps_path = gps_path
+        self.intercepts_path = intercepts_path
+        self.df = self.loading_csv(csv_path)
 
     @staticmethod
-    def loading_from_json(file_path:str, opening_way="r"):
+    def loading_json(file_path:str, opening_way="r"):
         with open(file_path, opening_way, encoding='utf-8') as f:
             return json.load(f)
         
 
-    @staticmethod
-    def loading_from_csv(file_path:str):
-        return pd.read_csv(file_path)
+    def loading_csv(self, csv_path):
+        return pd.read_csv(csv_path, na_values=[""], keep_default_na=True).fillna("UNKNOWN")
         
 
     def create_suspects_df(self):

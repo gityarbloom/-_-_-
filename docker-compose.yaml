@@ -51,6 +51,11 @@ services:
       retries: 10
 
 
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+
 
   data_loader:
     build: data_loader/

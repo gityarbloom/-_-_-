@@ -31,7 +31,7 @@ class MySqlLoader:
             with self.conn.cursor() as cursor:
                 cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name}")
                 cursor.execute(f"USE {db_name}")
-            print(f"\n👍 Create n👍Database!\n")
+            print(f"\n👍 Create Database '{db_name}'!\n")
             print(f"\n👍Database '{db_name}' is ready\n")
             self.conn.commit()
         except Exception as e:
@@ -48,7 +48,7 @@ class MySqlLoader:
                     nationality VARCHAR(100),
                     last_known_location VARCHAR(255)
                 )""")
-                print(f"\nTable 'suspects' create succesfully\n")
+                print(f"\n👍 Table 'suspects' created\n")
                 cursor.execute(f"""CREATE TABLE IF NOT EXISTS accounts_financial(
                     suspect_id VARCHAR(50),
                     bank_account VARCHAR(100),
@@ -56,11 +56,11 @@ class MySqlLoader:
                     credit_rating_factor INTEGER,
                     FOREIGN KEY (suspect_id) REFERENCES suspects(suspect_id)
                 )""")
-            print(f"\n👍 Table 'accounts_financial' create succesfully\n")
+            print(f"\n👍 Table 'accounts_financial' created\n")
             self.conn.commit()
             return ["suspects", "accounts_financial"]
         except Exception as e:
-            print(f"\n👎 Create tables failed... \n{e}\n")
+            print(f"\n👎 failed to create the tables\n{e}\n")
             raise
 
 
@@ -73,8 +73,8 @@ class MySqlLoader:
             with self.conn.cursor() as cursor:
                 cursor.executemany(sql, data)
             self.conn.commit()
-            print(f"\nn👍 Successfully loaded {len(df)} rows to {table_name}")
+            print(f"\n👍 Successfully loaded {len(df)} rows to '{table_name}' table\n")
         except Exception as e:
             self.conn.rollback()
-            print(f"👎 Failed to load DF to {table_name}: {e}")
+            print(f"👎 Failed to load DF to '{table_name}': \n{e}\n")
             raise

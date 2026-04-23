@@ -1,16 +1,15 @@
 from confluent_kafka import Producer
 import json
-import time
+
 
 
 class KafkaProducer:
     def __init__(self, config):
         for retry in range(5):
-            time.sleep(2)
             print("try to connect to kafka⏳...")
             try:
                 self.prod = Producer(config)
-                self.prod.list_topics(timeout=1)
+                self.prod.list_topics(topic="Gate_Keeper", timeout=1)
                 self.prod.flush(2)
                 print("\n👍 connected to kafka!")
                 break

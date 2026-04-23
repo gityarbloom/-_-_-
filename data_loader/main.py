@@ -8,20 +8,23 @@ import time
 
 def run():
     print("\n\n🌞 --The DATA-LOADER start his action-- 🌞\n\n")
-    config = ProjectConfig()
-    data = DataPreparer(config.gps_path, config.intercepts_path, config.identities_path)
-    
-    prod = KafkaProducer(config.prod_config)
-    prod.push_batch("Gate_Keeper", data.gps_signals, 5)
-    prod.push_batch("Gate_Keeper", data.intercepts_signals, 5)
 
-    suspects = data.create_suspects_df()
-    accounts_financial = data.create_accounts_financial_df()
+    config = ProjectConfig()
+    data = DataPreparer(*config.files_path)
+    prod = KafkaProducer(config.prod_config)
+
+
+    for j_path in config.files_path[:2]:
+        prod.push_batch("Gate_Keeper", data.loading_json(j_path), 5)
 
     mysql_loader = MySqlLoader(**config.db_config)
     table_names = mysql_loader.create_tables()
-    mysql_loader.load_df_to_table(suspects, table_names.index("suspects"))
-    mysql_loader.load_df_to_table(accounts_financial, table_names.index("accounts_financial"))
+    suspects = data.create_suspects_df()
+    accounts_financial = data.create_accounts_financial_df()
+    df_tables = [suspects, accounts_financial]
+
+    for i in range(len(df_tables)):
+        mysql_loader.load_df_to_table(df_tables[i], table_names[i])
     time.sleep(60)
     print("\n\n🥱 --The DATA-LOADER finish his action-- 🥱\n\n")
 

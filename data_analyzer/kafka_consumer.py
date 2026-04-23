@@ -1,4 +1,5 @@
 from confluent_kafka import Consumer, KafkaError
+import time
 
 
 
@@ -11,18 +12,22 @@ class  KafkaConsumer:
 
 
     def init_consumer(self):
-        print("\nTry to connect to kafka⏳...\n")
-        try:
-            consumer = Consumer(self.config)
-            consumer.subscribe([self.topic_name])
-            print("\n👍 Kafka consumer is connected!")
-            return consumer
-        except Exception as e:
-            print("\n👎 kafka connection faild")
+        for i in range(5):
+            time.sleep(1)
+            print("\nTry to connect to kafka⏳...\n")
+            try:
+                consumer = Consumer(self.config)
+                print("\n👍 Kafka consumer is connected!")
+                return consumer
+            except Exception as e:
+                if i == 4:
+                    print(f"\n👎 kafka connection faild \n{e}\n")
+                    raise
 
     def consum(self):
         if not self.consumer:
             self.consumer = self.init_consumer()
+            self.consumer.subscribe([self.topic_name])
         print("\nWaiting for messages from KRaft cluster...\n")
         try:
             while True:
