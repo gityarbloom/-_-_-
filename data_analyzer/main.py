@@ -1,3 +1,4 @@
+from mongo_connection import MongoConnection
 from mysql_analyzer import MySqlConnection
 from kafka_consumer import KafkaConsumer
 from processing_and_analysis import *
