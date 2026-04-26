@@ -42,7 +42,8 @@ class MySqlLoader:
     def create_tables(self):
         try:
             with self.conn.cursor() as cursor:
-                cursor.execute(f"""CREATE TABLE IF NOT EXISTS suspects(
+                cursor.execute(f"DROP TABLE IF EXISTS suspects, accounts_financial")
+                cursor.execute(f"""CREATE TABLE suspects(
                     suspect_id VARCHAR(50) PRIMARY KEY,
                     full_name VARCHAR(255),
                     nationality VARCHAR(100),
