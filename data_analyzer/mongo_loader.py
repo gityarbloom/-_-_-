@@ -2,7 +2,7 @@ from pymongo import MongoClient
 import time
 
 
-class MongoConnection:
+class MongoLoader:
     def __init__(self, mongo_uri:str):
         self.client_conn = self.get_mongodb_client(mongo_uri)
         self.db_name = None
