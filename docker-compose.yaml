@@ -115,6 +115,7 @@ services:
       MONGO_URI: mongodb://admin:israelyarbloom@mongo:27017/?authSource=admin
     depends_on:
       - data_loader
+      - mongo
 
 
 volumes:
